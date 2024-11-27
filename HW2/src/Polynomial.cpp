@@ -5,7 +5,7 @@ using namespace std;
 class Term;
 class Polynomial;
 
-// ========== 多項式項數單位
+// ========== 多項式基本單位
 class Term
 {
 friend Polynomial;
@@ -26,12 +26,15 @@ private:
 public:
     Polynomial()
     {
-        termArray = new Term[2];
-        capacity = 2;
+        termArray = new Term[1];
+        capacity = 1;
         terms = 0;
+
+        termArray->coef=0;
+        termArray->exp=0;
     }
-    
-    // ---------- 新增一個項數到多項式
+
+    // ---------- 新增一個單位到多項式
     void newTerm(const float theCoef, const int theExp)  
     {
         if(terms==capacity) 
@@ -101,6 +104,9 @@ public:
     // ---------- 多項式相乘
     Polynomial Mult(Polynomial poly)
     {
+        Soft();
+        poly.Soft();
+        
         Polynomial result;
 
         for (int i = 0; i < this->terms; ++i)
@@ -124,7 +130,6 @@ public:
             }
         }
 
-    result.Soft();
     return result;
     }
 
@@ -179,7 +184,11 @@ int main()
 
     cout << "兩式相加: " << a.Add(b) << endl;
     cout << "兩式相乘: " << a.Mult(b) << endl;
-    cout << "相乘結果代入1: " << a.Mult(b).Eval(1) << endl;
+
+    float x;
+    cout << "請輸入一數將代入兩式相乘結果計算: ";
+    cin >> x;
+    cout << "代入 x = " << x << " 計算結果為: " << a.Mult(b).Eval(x) << endl;
 
     return 0;
 }
